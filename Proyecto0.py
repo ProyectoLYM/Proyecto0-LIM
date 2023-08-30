@@ -9,12 +9,20 @@ def cargar_archivo(archivo):
     
 
 
-def corrector(expresion):
+def corrector(lista):
     expresion = expresion.strip()
     expresion = expresion.lowercase()
+    return expresion
     
     
-def lexer(expression):
-    listai = ["jump","walk","leap", "turn", "turnto", "drop", "get", "grab", "letgo", "nop"]
-    listaf = ["ju","wa","le","tu","tt", "dr", "ge", "gr", "lg", "np"]
-    
+def lexer(lista):
+    listaDefiniciones = ["jump","walk","leap", "turn", "turnto", "drop", "get", "grab", "letgo", "nop"]
+    listaAbreviaciones = ["ju","wa","le","tu","tt", "dr", "ge", "gr", "lg", "np"]
+    listaFinal = []
+    for i in range(len(lista)):
+        expresion = corrector(lista[i])
+        for char in range(len(listaDefiniciones)):
+            if expresion in char():
+                listaFinal.append(expresion.split(" "))
+                                
+                
