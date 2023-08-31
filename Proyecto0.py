@@ -1,53 +1,37 @@
+import re
+def lexer(contenido):
+    lineas = contenido.split("\n")
+    tokens = []
+    for i in range(len(lineas)):
+        linea = quitar_espacios(lineas[i])
+        if "defVar" in linea:
+            palabra = linea.split(" ")
+            if "defVar" in linea[0]:
+                if len(linea) == 3:
+                    primer_token = "Variable"
+                    segundo_token = "Nombre"
+                    tercer_token = "Valor"
+                    token = (primer_token,segundo_token,tercer_token)
+                if len(linea) > 3 or len(linea) < 3:
+                    token = "No valido"
+            else:
+                 token = "No valido"  
+        if "defProc" in linea:
+            palabra = linea.split(" ")
+            if "defProc" in linea[0]:
+                if "(" and ")" in linea:
+                    
+                     
+        tokens.append(token)
+            
+    return lista
+def quitar_espacios(expresion):
+    expresion = expresion.strip()
+    return expresion
 def cargar_archivo(archivo):
-    archivo = open(archivo)
-    lista = []
-    linea = archivo.readline()
-    while len(linea) > 0:
-        lista.append[linea]
-        linea.readline()
+    contenido = open(archivo,"r").read()
+    lista = lexer(contenido)
     return lista
     
-
-
-def corrector(lista):
-    expresion = expresion.strip()
-    expresion = expresion.lowercase()
-    return expresion
-
-def correctorDefinicioneVariables(lista):
-    respuestaFinal = False
-    listaDefiniciones = ["defvar", "defproc"]
-    respuesta = []
-    for i in range(len(lista)):
-        expresion = corrector(lista[i])
-        if listaDefiniciones[0] in expresion:
-            x = expresion.split(" ")
-            if len(x == 3):
-                respuesta.append(True)
-            else:
-                respuesta.append(False)
-        if listaDefiniciones[1] in expresion:
-            x = expresion.split(" ")
-            if len(x == 3):
-                if "(" in x[2] and ")" in x[2] and "," in x[2]:
-                    if x[2].find("(") < x[2].find(")") and x[2].count(",") == 1:
-                        respuesta.append(True) 
-                else:
-                    respuesta.append(False)
-            else:
-                respuesta.append(False)
-    if respuesta.size() == lista.size():
-        respuestaFinal = True
-    return respuestaFinal
-                
-      
-def lexer(lista):
-    listaDefiniciones = ["jump","walk","leap", "turn", "turnto", "drop", "get", "grab", "letgo", "nop"]
-    listaAbreviaciones = ["ju","wa","le","tu","tt", "dr", "ge", "gr", "lg", "np"]
-    listaFinal = []
-    for i in range(len(lista)):
-        expresion = corrector(lista[i])
-        for char in range(len(listaDefiniciones)):
-            if expresion in char():
-                listaFinal.append(expresion.split(" "))
-                
+print(cargar_archivo("ejemploFull.txt"))
+    
