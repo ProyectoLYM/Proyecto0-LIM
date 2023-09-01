@@ -18,8 +18,24 @@ def lexer(contenido):
                  token = "No valido"  
         if "defProc" in linea:
             palabra = linea.split(" ")
-            if "defProc" in linea[0]:
-                if "(" and ")" in linea:
+            if "defProc" in palabra[0]:
+                if len(palabra[1] != 0):
+                    if "(" and ")" in linea:
+                        parametros = linea.split("(")
+                        parametro = parametros.split(",")
+                        if parametro > linea.count(","):
+                            token = ("Proceso", "Nombre", "Parametros")
+                    else:
+                        token = "No valido"
+                else:
+                    token = "No valido"
+            else:
+                token = "No valido"
+        if "if" in linea or "else" in linea:
+            palabra = linea.split(" ")
+            
+                            
+                    
                     
                      
         tokens.append(token)
