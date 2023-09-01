@@ -6,13 +6,13 @@ def lexer(contenido):
         linea = quitar_espacios(lineas[i])
         if "defVar" in linea:
             palabra = linea.split(" ")
-            if "defVar" in linea[0]:
-                if len(linea) == 3:
+            if "defVar" in palabra[0]:
+                if len(palabra) == 3:
                     primer_token = "Variable"
                     segundo_token = "Nombre"
                     tercer_token = "Valor"
                     token = (primer_token,segundo_token,tercer_token)
-                if len(linea) > 3 or len(linea) < 3:
+                if len(palabra) > 3 or len(palabra) < 3:
                     token = "No valido"
             else:
                  token = "No valido"  
@@ -33,6 +33,9 @@ def lexer(contenido):
                 token = "No valido"
         if "if" in linea or "else" in linea:
             palabra = linea.split(" ")
+            if "if" in palabra[0]:
+                if "{" in linea or "{" in lineas[i + 1]:
+                    
             
                             
                     
