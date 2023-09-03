@@ -1,4 +1,18 @@
-import re
+
+def quitar_espacios(expresion):
+    expresion = expresion.strip()
+    return expresion
+
+
+def cargar_archivo(archivo):
+    contenido = open(archivo,"r").read()
+    lista = lexer(contenido)
+    return lista
+    
+    
+print(cargar_archivo("ejemploFull.txt"))
+
+
 def lexer(contenido):
     lineas = contenido.split("\n")
     tokens = []
@@ -36,21 +50,9 @@ def lexer(contenido):
             if "if" in palabra[0]:
                 if "{" in linea or "{" in lineas[i + 1]:
                     
-            
-                            
-                    
-                    
                      
         tokens.append(token)
             
     return lista
-def quitar_espacios(expresion):
-    expresion = expresion.strip()
-    return expresion
-def cargar_archivo(archivo):
-    contenido = open(archivo,"r").read()
-    lista = lexer(contenido)
-    return lista
-    
-print(cargar_archivo("ejemploFull.txt"))
+
     
