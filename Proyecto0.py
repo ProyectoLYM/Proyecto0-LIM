@@ -27,11 +27,13 @@ def definicionVariable(linea):
 def definicionProceso(linea):
     palabra = linea.split(" ")
     if "defProc" in palabra[0]:
-        if len(palabra[1] != 0):
+        if (palabra[1] != 0) == True:
             if "(" and ")" in linea:
-                parametros = linea.split("(")
-                parametro = parametros.split(",")
-                if parametro > linea.count(","):
+                slice1 = linea.find("(")
+                slice2 = linea.find(")")
+                parametro = linea[slice1:slice2]
+                parametros = parametro.split(",")
+                if len(parametros) > parametro.count(","):
                     token = "Valido"
             else:
                 token = "No valido"
@@ -55,7 +57,7 @@ def condicionalif(lineas, i):
                         if "{" in lineas[i]:
                             Encontro = True
                             token = "Valido"
-                        elif "{" not in lineas[i] and lineas[i].size != 0:
+                        elif "{" not in lineas[i] and len(lineas[i]) != 0:
                             Encontro = True
                             token = "No valido"
                         i += 1
@@ -66,20 +68,23 @@ def condicionalelse(lineas, i):
     linea = quitar_espacios(lineas[i])
     Encontro = False
     if "else" in linea:
-            palabra = linea.split(" ")
-            if "else" in palabra[0]:
-                if "{" in linea:
-                    token = "Valido"
-                else:
-                    while (Encontro == False and i < len(lineas)):
-                        if "{" in lineas[i]:
-                            Encontro = True
-                            token = "Valido"
-                        elif "{" not in lineas[i] and len(lineas[i]) != 0:
-                            Encontro = True
-                            token = "No valido"
-                        else:
-                            i += 1
+        palabra = linea.split(" ")
+        if "else" in palabra[0]:
+            print("Entra")
+            if "{" in linea:
+                token = "Valido"
+            else:
+                while (Encontro == False and i < len(lineas)):
+                    if "{" in lineas[i]:
+                        Encontro = True
+                        token = "Valido"
+                    elif "{" not in lineas[i] and len(lineas[i]) != 0:
+                        Encontro = True
+                        token = "No valido"
+                    else:
+                        i += 1
+        else:
+            token = "No valido"
     return token        
         
         
@@ -263,19 +268,23 @@ def leap(linea):
 def turn(linea):
     lista = ["left", "right", "around"]
     indice = linea.find("turn")
+    param = 0
     for i in range(3):
         if lista[i] in linea:
             param = linea.find(lista[i])
         else:
             token = "No valido"
         palabra = linea.replace(" ", "")
-        palabra = palabra[indice:param+1]
-        if "(" in palabra and ")" in palabra:
-            if palabra.find("(") > palabra.find(")"):
-                token = "Valido"
-            else:
+        if param != 0:
+            palabra = palabra[indice:param+1]
+            if "(" in palabra and ")" in palabra:
+                if palabra.find("(") > palabra.find(")"):
+                    token = "Valido"
+                else:
+                    token = "No valido"
+            else: 
                 token = "No valido"
-        else: 
+        else:
             token = "No valido"
     return token
        
@@ -283,19 +292,23 @@ def turn(linea):
 def turnto(linea):
     lista = ["north", "south", "east", "west"]
     indice = linea.find("turnto")
+    param = 0
     for i in range(4):
         if lista[i] in linea:
             param = linea.find(lista[i])
         else:
             token = "No valido"
-        palabra = linea.replace(" ", "")
-        palabra = palabra[indice:param+1]
-        if "(" in palabra and ")" in palabra:
-            if palabra.find("(") > palabra.find(")"):
-                token = "Valido"
-            else:
+        if param != 0:
+            palabra = linea.replace(" ", "")
+            palabra = palabra[indice:param+1]
+            if "(" in palabra and ")" in palabra:
+                if palabra.find("(") > palabra.find(")"):
+                    token = "Valido"
+                else:
+                    token = "No valido"
+            else: 
                 token = "No valido"
-        else: 
+        else:
             token = "No valido"
     return token
 
@@ -338,7 +351,7 @@ def get(linea):
     
 def grab(linea):
     palabra = linea.replace(" ", "")
-    indice = linea.find(grab)
+    indice = linea.find("grab")
     palabra1 = linea[indice:len(palabra) - 1]
     if "(" in palabra and ")" in palabra1:
         param = palabra1.find("(")
@@ -403,56 +416,41 @@ def lexer(contenido):
     lineas = contenido.split("\n")
     tokens = []
     tokenbrackets = contarbrackets(contenido)
-    tokencondicionales = contarCondicionales(contenido)
+    tokencondicionales = contarCondicionales(lineas)
     tokens.append(tokenbrackets)
     tokens.append(tokencondicionales)
     for i in range(len(lineas)):
         linea = quitar_espacios(lineas[i])
         if "defVar" in linea:
             token = definicionVariable(linea)
-            print("entra")
         if "defProc" in linea:
             token = definicionProceso(linea)
-            print("entra")
         if "if" in linea:
             token = condicionalif(lineas, i)
-            print("entra")
         if "else" in linea:
             token = condicionalelse(lineas, i)
-            print("entra")
         if "while" in linea:
-            token = ciclos(lineas, i)
-            print("entra")
+            token = ciclos(lineas, i) 
         if "walk" in linea:
             token = walk(linea)
-            print("entra")
         if "leap" in linea:
             token = leap(linea)
-            print("entra")
         if "jump" in linea:
             token = funcionJump(linea)
-            print("entra")
         if "turn" in linea:
             token = turn(linea)
-            print("entra")
         if "turnto" in linea:
             token = turnto(linea)
-            print("entra")
         if "nop" in linea:
             token = nop(linea)
-            print("entra")
         if "drop" in linea:
             token = drop(linea)
-            print("entra")
         if "get" in linea:
             token = get(linea)
-            print("entra")
         if "grab" in linea:
             token = grab(linea)
-            print("entra")
         if "letgo" in linea:
             token = letGo(linea)
-            print("entra")
         else:
             token = None
         tokens.append(token)
