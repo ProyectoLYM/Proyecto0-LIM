@@ -9,7 +9,7 @@ def cargar_archivo(archivo):
     return contenido
     
     
-print(cargar_archivo("ejemploFull.txt"))
+#print(cargar_archivo("ejemploFull.txt"))
 
 
 def definicionVariable(linea):
@@ -103,23 +103,23 @@ def ciclos(lineas, i):
     return token 
                         
         
-def contarCondicionales(linea):
+def contarCondicionales(contenido):
     ifs = 0
     elses = 0
     invalido = False
     i = 0
-    while i < len(linea) and not invalido:
-        if "if" in linea:
+    while i < len(contenido) and not invalido:
+        if "if" in contenido[i]:
             ifs += 1
-        if "else" in linea:
+        if "else" in contenido[i]:
             elses += 1
             if elses > ifs:
                 token = "No valido"
                 invalido = True
             else:
                 token = "Valido"
-            i += 1
-    return token 
+        i += 1
+    return token
 
 
 def contarbrackets(contenido):
@@ -192,6 +192,19 @@ def funcionWalk2(linea):
         else:
             token = "No valido"
         return token
+    
+def walk(linea):
+    spaces = linea.replace(" ", "")
+    index = linea.find("walk")
+    slice = linea[index:len(spaces) + 1]
+    find1 = slice.find("(")
+    find2 = slice.find(")")
+    slice2 = slice[find1:find2 + 1]
+    if "," in slice2:
+        token = funcionWalk2(linea)
+    else:
+        token = funcionWalk(linea)
+    return token
             
         
 def funcionLeap(linea):
@@ -230,7 +243,21 @@ def funcionLeap2(linea):
                 token = "No valido"
         else:
             token = "No valido"
-        return token    
+        return token   
+    
+
+def leap(linea):
+    spaces = linea.replace(" ", "")
+    index = linea.find("leap")
+    slice = linea[index:len(spaces) + 1]
+    find1 = slice.find("(")
+    find2 = slice.find(")")
+    slice2 = slice[find1:find2 + 1]
+    if "," in slice2:
+        token = funcionLeap2(linea)
+    else:
+        token = funcionLeap(linea)
+    return token 
     
     
 def turn(linea):
@@ -386,18 +413,43 @@ def resultado(archivo):
 def lexer(contenido):
     lineas = contenido.split("\n")
     tokens = []
+    tokenbrackets = contarbrackets(contenido)
+    tokencondicionales = contarCondicionales(contenido)
+    tokens.append(tokenbrackets)
+    tokens.append(tokencondicionales)
     for i in range(len(lineas)):
         linea = quitar_espacios(lineas[i])
         if "defVar" in linea:
-            token = definicionVariable 
+            token = definicionVariable(linea)
         if "defProc" in linea:
-            token = definicionProceso
-        if "if" in linea or "else" in linea:
-            palabra = linea.split(" ")
-            if "if" in palabra[0]:
-                if "{" in linea or "{" in lineas[i + 1]:
-                    
-                     
+            token = definicionProceso(linea)
+        if "if" in linea:
+            token = condicionalif(lineas, i)
+        if "else" in linea:
+            token = condicionalelse(lineas, i)
+        if "while" in linea:
+            token = ciclos(lineas, i)
+        if "walk" in linea:
+            token = walk(linea)
+        if "leap" in linea:
+            token = leap(linea)
+        if "jump" in linea:
+            token = funcionJump(linea)
+        if "turn" in linea:
+            token = turn(linea)
+        if "turnto" in linea:
+            token = turnto(linea)
+        if "nop" in linea:
+            token = nop(linea)
+        if "drop" in linea:
+            token = drop(linea)
+        if "get" in linea:
+            token = get(linea)
+        if "grab" in linea:
+            token = grab(linea)
+        if "letgo" in linea:
+            token = letGo(linea)
+        else:
+            token = None
         tokens.append(token)
-            
-    return lista
+    return tokens
