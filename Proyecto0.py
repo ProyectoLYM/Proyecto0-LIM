@@ -9,7 +9,7 @@ def cargar_archivo(archivo):
     return contenido
     
     
-#print(cargar_archivo("ejemploFull.txt"))
+archivo = "ejemploFull.txt"
 
 
 def definicionVariable(linea):
@@ -398,17 +398,6 @@ def parser(tokens):
             i += 1
     return correcto
             
-        
-def resultado(archivo):
-    archivo = "ejemploFull.txt"
-    carga = cargar_archivo(archivo)
-    respuesta = parser(carga)
-    if respuesta == True:
-        res = print("La sintaxis es correcta: True")
-    else:
-        res = print("La sintaxis no es correcta: False")
-    return res
-    
     
 def lexer(contenido):
     lineas = contenido.split("\n")
@@ -421,35 +410,64 @@ def lexer(contenido):
         linea = quitar_espacios(lineas[i])
         if "defVar" in linea:
             token = definicionVariable(linea)
+            print("entra")
         if "defProc" in linea:
             token = definicionProceso(linea)
+            print("entra")
         if "if" in linea:
             token = condicionalif(lineas, i)
+            print("entra")
         if "else" in linea:
             token = condicionalelse(lineas, i)
+            print("entra")
         if "while" in linea:
             token = ciclos(lineas, i)
+            print("entra")
         if "walk" in linea:
             token = walk(linea)
+            print("entra")
         if "leap" in linea:
             token = leap(linea)
+            print("entra")
         if "jump" in linea:
             token = funcionJump(linea)
+            print("entra")
         if "turn" in linea:
             token = turn(linea)
+            print("entra")
         if "turnto" in linea:
             token = turnto(linea)
+            print("entra")
         if "nop" in linea:
             token = nop(linea)
+            print("entra")
         if "drop" in linea:
             token = drop(linea)
+            print("entra")
         if "get" in linea:
             token = get(linea)
+            print("entra")
         if "grab" in linea:
             token = grab(linea)
+            print("entra")
         if "letgo" in linea:
             token = letGo(linea)
+            print("entra")
         else:
             token = None
         tokens.append(token)
     return tokens
+
+
+def resultado(archivo):
+    carga = cargar_archivo(archivo)
+    tokens = lexer(carga)
+    respuesta = parser(tokens)
+    if respuesta == True:
+        res = print("La sintaxis es correcta: True")
+    else:
+        res = print("La sintaxis no es correcta: False")
+    return res
+
+print(resultado(archivo))
+
