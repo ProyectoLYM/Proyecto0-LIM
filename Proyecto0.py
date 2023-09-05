@@ -232,21 +232,29 @@ def funcionLeap2(linea):
     direccion = ["front", "right", "left", "back"]
     coord = ["north", "south", "west", "east"]
     index = linea.find("leap")
-    print(index)
+    #print(index)
     split = linea.split(";")
-    print(split)
+    for x in range(len(split)):
+        if "leap" in split[x]:
+            indice = x
+    #print(indice)
+    #print(split[indice])
     for i in range(4):
-        if direccion[i] in linea:
+        if direccion[i] in split[indice]:
             lenght = len(direccion[i])
-            index_value = linea.find(direccion[i])
-            print(index_value)
-        elif coord[i] in linea:
+            index_value = split[indice].find(direccion[i])
+            nuevo_index = split[indice].find("leap")
+            #print(nuevo_index, "LOOL")
+            #print(index_value, "AÑA")
+        elif coord[i] in split[indice]:
             lenght = len(coord[i])
-            index_value = linea.find(coord[i])
+            index_value = split[indice].find(coord[i])
+            nuevo_index = split[indice].find("leap")
         else:
             token = "No valido"
-        slice = linea.replace(" ", "")
-        slice1 = slice[index:index_value + lenght]
+        #slice = linea.replace(" ", "")
+        slice1 = split[indice].replace(" ", "")
+        #print(slice1)
         if "(" in slice1 and ")" in slice1:
             if slice1.find("(") < slice1.find(")"):
                 token = "Valido"
@@ -446,7 +454,7 @@ def lexer(contenido):
             token = walk(linea)
             tokens.append(token)
         if "leap" in linea:
-            token = funcionLeap2(linea)
+            token = leap(linea)
             tokens.append(token)
         if "jump" in linea:
             token = funcionJump(linea)
