@@ -1,7 +1,9 @@
 
 def quitar_espacios(expresion):
     expresion = expresion.strip()
-    return expresion
+    palabras = expresion.split()
+    espacio = " ".join(palabras)
+    return espacio
 
 
 def cargar_archivo(archivo):
@@ -421,38 +423,45 @@ def lexer(contenido):
     tokens.append(tokencondicionales)
     for i in range(len(lineas)):
         linea = quitar_espacios(lineas[i])
+        #print(linea)
         if "defVar" in linea:
             token = definicionVariable(linea)
-        if "defProc" in linea:
+        elif "defProc" in linea:
             token = definicionProceso(linea)
-        if "if" in linea:
+        elif "if" in linea:
             token = condicionalif(lineas, i)
-        if "else" in linea:
+        elif "else" in linea:
             token = condicionalelse(lineas, i)
-        if "while" in linea:
+        elif "while" in linea:
             token = ciclos(lineas, i) 
-        if "walk" in linea:
+        elif "walk" in linea:
             token = walk(linea)
-        if "leap" in linea:
+        elif "leap" in linea:
             token = leap(linea)
-        if "jump" in linea:
+        elif "jump" in linea:
             token = funcionJump(linea)
-        if "turn" in linea:
+        elif "turn" in linea:
             token = turn(linea)
-        if "turnto" in linea:
+        elif "turnto" in linea:
             token = turnto(linea)
-        if "nop" in linea:
+        elif "nop" in linea:
             token = nop(linea)
-        if "drop" in linea:
+        elif "drop" in linea:
             token = drop(linea)
-        if "get" in linea:
+        elif "get" in linea:
             token = get(linea)
-        if "grab" in linea:
+        elif "grab" in linea:
             token = grab(linea)
-        if "letgo" in linea:
+        elif "letgo" in linea:
             token = letGo(linea)
         else:
             token = None
+        if token == "No valido":
+            token = ("No valido", linea)
+        if token == "Valido":
+            token = ("Valido", linea)
+        if token == "None":
+            token = ("None", linea)
         tokens.append(token)
     return tokens
 
@@ -460,6 +469,7 @@ def lexer(contenido):
 def resultado(archivo):
     carga = cargar_archivo(archivo)
     tokens = lexer(carga)
+    print(tokens)
     respuesta = parser(tokens)
     if respuesta == True:
         res = print("La sintaxis es correcta: True")
