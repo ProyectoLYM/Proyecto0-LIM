@@ -354,16 +354,21 @@ def drop(linea):
         param = palabra1.find("(")
         param2 = palabra1.find(")")
         palabra = palabra1[param:param2]
-        try:
-            int(palabra)
-            token = "Valido"
-        except(TypeError):
-            token = "No valido"
     else:
         token = "No valido"
+    if es_entero(palabra) == True:
+        token = "Valido"
+    else:
+        token = "No valido"
+    print(token)
     return token
     
-    
+def es_entero(texto):
+    try:
+        int(texto)
+        return True
+    except ValueError:
+        return False
 def get(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("get")
@@ -372,11 +377,10 @@ def get(linea):
         param = palabra1.find("(")
         param2 = palabra1.find(")")
         palabra = palabra1[param:param2]
-        try:
-            int(palabra)
-            token = "Valido"
-        except(ValueError):
-            token = "No valido"
+    else:
+        token = "No valido"
+    if es_entero(palabra) == True:
+        token = "Valido"
     else:
         token = "No valido"
     return token
@@ -390,23 +394,21 @@ def grab(linea):
         param = palabra1.find("(")
         param2 = palabra1.find(")")
         palabra = palabra1[param:param2]
-        try:
-            x = int(palabra)
-            token = "Valido"
-        except(ValueError ):
-            token = "No valido"
+    else:
+        token = "No valido"
+    if es_entero(palabra) == True:
+        token = "Valido"
     else:
         token = "No valido"
     return token
 
 
+
 def letGo(linea):
     palabra = linea.replace(" ", "")
-    indice = linea.find("letGo")
+    indice = linea.find("letgo")
     palabra1 = linea[indice:len(palabra)]
-    print(palabra1)
     if "(" in palabra and ")" in palabra1:
-        print("x")
         param = palabra1.find("(")
         param2 = palabra1.find(")")
         palabra = palabra1[param:param2]
@@ -416,19 +418,12 @@ def letGo(linea):
         token = "No valido"
     return token
 
-def es_entero(texto):
-    try:
-        int(texto)
-        return True
-    except ValueError:
-        return False
 
 
 def nop(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("nop")
     palabra = linea[indice:indice+5]
-    print(palabra)
     if "(" in palabra and ")" in palabra:
         token = "Valido"
     else:
@@ -459,43 +454,51 @@ def lexer(contenido):
         #print(linea)
         if "defVar" in linea:
             token = definicionVariable(linea)
-        elif "defProc" in linea:
+            tokens.append(token)
+        if "defProc" in linea:
             token = definicionProceso(linea)
-        elif "if" in linea:
+            tokens.append(token)
+        if "if" in linea:
             token = condicionalif(lineas, i)
-        elif "else" in linea:
+            tokens.append(token)
+        if "else" in linea:
             token = condicionalelse(lineas, i)
-        elif "while" in linea:
+            tokens.append(token)
+        if "while" in linea:
             token = ciclos(lineas, i) 
-        elif "walk" in linea:
+            tokens.append(token)
+        if "walk" in linea:
             token = walk(linea)
-        elif "leap" in linea:
+            tokens.append(token)
+        if "leap" in linea:
             token = leap(linea)
-        elif "jump" in linea:
+            tokens.append(token)
+        if "jump" in linea:
             token = funcionJump(linea)
-        elif "turn" in linea and "turnto" not in linea:
+            tokens.append(token)
+        if "turn" in linea and "turnto" not in linea:
             token = turn(linea)
-        elif "turnto" in linea:
+            tokens.append(token)
+        if "turnto" in linea:
             token = turnto(linea)
-        elif "nop" in linea:
+            tokens.append(token)
+        if "nop" in linea:
             token = nop(linea)
-        elif "drop" in linea:
+            tokens.append(token) 
+        if "drop" in linea:
             token = drop(linea)
-        elif "get" in linea:
+            tokens.append(token)
+        if "get" in linea:
             token = get(linea)
-        elif "grab" in linea:
+            tokens.append(token)
+        if "grab" in linea:
             token = grab(linea)
-        elif "letgo" in linea:
+            tokens.append(token)
+        if "letgo" in linea:
             token = letGo(linea)
+            tokens.append(token)
         else:
             token = None
-        if token == "No valido":
-            token = ("No valido", linea)
-        if token == "Valido":
-            token = ("Valido", linea)
-        if token == "None":
-            token = ("None", linea)
-        tokens.append(token)
     return tokens
 
 
