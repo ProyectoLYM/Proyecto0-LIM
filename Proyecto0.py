@@ -49,53 +49,54 @@ def definicionProceso(linea):
 def condicionalif(lineas, i):
     linea = quitar_espacios(lineas[i])
     Encontro = False
+    indice = i
     if "if" in linea:
             palabra = linea.split(" ")
-            if "if" in palabra[0]:
+            if "if" in palabra[0] or "}"in palabra[0]:
                 if "{" in linea:
                     token = "Valido"
                 else:
-                    while (Encontro == False and i < len(lineas)):
-                        if "{" in lineas[i]:
+                    while (Encontro == False and indice < len(lineas)):
+                        if "{" in lineas[indice]:
                             Encontro = True
                             token = "Valido"
-                        elif "{" not in lineas[i] and len(lineas[i]) != 0:
-                            Encontro = True
+                        elif "{" not in lineas[indice]:
+                            Encontro = False
                             token = "No valido"
-                        i += 1
+                        indice += 1
     return token
-        
-        
+
+
 def condicionalelse(lineas, i):
     linea = quitar_espacios(lineas[i])
     Encontro = False
+    indice = i
     if "else" in linea:
-        palabra = linea.split(" ")
-        if "else" in palabra[0]:
-            print("Entra")
-            if "{" in linea:
-                token = "Valido"
+            palabra = linea.split(" ")
+            if "else" in palabra[0] or "}" in palabra[0]: 
+                if "{" in linea:
+                    token = "Valido"
+                else:
+                    while (Encontro == False and indice < len(lineas)):
+                        if "{" in lineas[indice]:
+                            Encontro = True
+                            token = "Valido"
+                        elif "{" not in lineas[indice]:
+                            Encontro = False
+                            token = "No valido"
+                        indice += 1
             else:
-                while (Encontro == False and i < len(lineas)):
-                    if "{" in lineas[i]:
-                        Encontro = True
-                        token = "Valido"
-                    elif "{" not in lineas[i] and len(lineas[i]) != 0:
-                        Encontro = True
-                        token = "No valido"
-                    else:
-                        i += 1
-        else:
-            token = "No valido"
-    return token        
+                token = "No valido"
+
+    return token       
         
-        
+
 def ciclos(lineas, i):
     linea = quitar_espacios(lineas[i])
     encontro = False
     if "while" in linea:
         palabra = linea.split(" ")
-        if "while" in palabra[0]:
+        if "while" in palabra[0] or "}" in palabra[0]:
             if "{" in linea:
                 token = "Valido"
             else:
@@ -104,10 +105,10 @@ def ciclos(lineas, i):
                         encontro = True
                         token = "Valido"
                     elif "{" not in lineas[i] and len(lineas[i]) != 0:
-                        encontro = True
+                        encontro = False
                         token = "No valido"
                     i += 1
-    return token 
+    return token
                         
         
 def contarCondicionales(contenido):
@@ -176,7 +177,7 @@ def funcionWalk(linea):
     return token 
     
 
-def funcionWalk2(linea):
+#def funcionWalk2(linea):
     direccion = ["front", "right", "left", "back"]
     coord = ["north", "south", "west", "east"]
     index = linea.find("walk")
@@ -199,6 +200,34 @@ def funcionWalk2(linea):
         else:
             token = "No valido"
         return token
+    
+    
+def funcionWalk2(lineas, i):
+    direccion = ["front", "right", "left", "back"]
+    coord = ["north", "south", "west", "east"]
+    linea = quitar_espacios(lineas[i])
+    index = linea.find("walk")
+    print(index)
+    for i in range(4):
+        if direccion[i] in linea:
+            lenght = len(direccion[i])
+            index_value = linea.find(direccion[i])
+        elif coord[i] in linea:
+            lenght = len(coord[i])
+            index_value = linea.find(coord[i])
+        else:
+            token = "No valido"
+        slice = linea.replace(" ", "")
+        slice1 = slice[index:index_value + lenght]
+        if "(" in slice1 and ")" in slice1:
+            if slice1.find("(") > slice1.find(")"):
+                token = "Valido"
+            else:
+                token = "No valido"
+        else:
+            token = "No valido"
+        return token
+    
     
 def walk(linea):
     spaces = linea.replace(" ", "")
@@ -435,7 +464,7 @@ def lexer(contenido):
         elif "while" in linea:
             token = ciclos(lineas, i) 
         elif "walk" in linea:
-            token = walk(linea)
+            token = funcionWalk2(lineas, i)
         elif "leap" in linea:
             token = leap(linea)
         elif "jump" in linea:
