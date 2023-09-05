@@ -1,19 +1,20 @@
-
+#La primera funciones para quitar los espacios de un str
 def quitar_espacios(expresion):
     expresion = expresion.strip()
     palabras = expresion.split()
     espacio = " ".join(palabras)
     return espacio
 
-
+#Aca cargamos el archivo, el cual puede estar en formato de csv o txt.
 def cargar_archivo(archivo):
     contenido = open(archivo,"r").read()
     return contenido
     
-    
+
 archivo = "ejemploFull.txt"
 
 
+#Esta funcion es para el lexer y se usa de manera que analice si las definiciones de variables estan sintacticamente correctas, retorna un token que puede ser Valido o No valido
 def definicionVariable(linea):
     palabra = linea.split(" ")
     if "defVar" in palabra[0]:
@@ -25,7 +26,7 @@ def definicionVariable(linea):
         token = "No valido"
     return token 
             
-
+#Esta funcion es para el lexer y se usa de manera que analice si las definciones de procesos estan sintacticamente correctos, retorna un token que puede ser Valido o No valido
 def definicionProceso(linea):
     palabra = linea.split(" ")
     if "defProc" in palabra[0]:
@@ -46,6 +47,8 @@ def definicionProceso(linea):
     return token
 
 
+
+#Esta funcion es para el lexer y se usa de manera que analice si los ifs(condicional) estan sintacticamente correctos, retorna un token que puede ser Valido o No valido
 def condicionalif(lineas, i):
     linea = quitar_espacios(lineas[i])
     Encontro = False
@@ -67,6 +70,8 @@ def condicionalif(lineas, i):
     return token
 
 
+
+#Esta funcion es para el lexer y se usa de manera que analice si los elses(condicional) estan sintacticamente correctos, retorna un token que puede ser Valido o No valido
 def condicionalelse(lineas, i):
     linea = quitar_espacios(lineas[i])
     Encontro = False
@@ -89,7 +94,9 @@ def condicionalelse(lineas, i):
                 token = "No valido"
     return token       
         
-
+        
+        
+#Esta funcion es para el lexer y se usa de manera que analice si los whiles(ciclos) estan sintacticamente correctos, retorna un token que puede ser Valido o No valido
 def ciclos(lineas, i):
     linea = quitar_espacios(lineas[i])
     encontro = False
@@ -110,6 +117,9 @@ def ciclos(lineas, i):
     return token
                         
         
+        
+#Esta funcion es para el lexer y se usa de manera que analice si hay una cantidad adecuada de ifs y elses, debido a que en ningun momento pueden haber mas ifs que elses
+#retorna un token que puede ser Valido o No valido
 def contarCondicionales(contenido):
     ifs = 0
     elses = 0
@@ -129,6 +139,8 @@ def contarCondicionales(contenido):
     return token
 
 
+#Esta funcion es para el lexer y se usa de manera que analice si la cantidad de brackets que abren es igual a la cantidad de brackets que cierran.
+#Analiza tambien que no exista ningun bracket cerrado sin antes haber uno abierto
 def contarbrackets(contenido):
     centinela = True
     x = 0
@@ -148,6 +160,7 @@ def contarbrackets(contenido):
     return token
 
 
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion Jump del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def funcionJump(linea):
     index = linea.find("jump")
     slice = linea[index:len(linea) + 1]
@@ -161,6 +174,8 @@ def funcionJump(linea):
     return token 
 
 
+
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion Walk(sin valor) del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def funcionWalk(linea):
     index = linea.find("walk")
     slice = linea[index:len(linea) + 1]
@@ -173,17 +188,15 @@ def funcionWalk(linea):
         token = "No valido" 
     return token 
     
-    
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion Walk(con valor) del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def funcionWalk2(linea):
     direccion = ["front", "right", "left", "back"]
     coord = ["north", "south", "west", "east"]
     index = linea.find("walk")
-    #print(index)
     for i in range(4):
         if direccion[i] in linea:
             lenght = len(direccion[i])
             index_value = linea.find(direccion[i])
-            #print(index_value)
         elif coord[i] in linea:
             lenght = len(coord[i])
             index_value = linea.find(coord[i])
@@ -200,7 +213,7 @@ def funcionWalk2(linea):
             token = "No valido"
         return token
     
-    
+#Funcion walk para especificar si el walk tiene o no valor 
 def walk(linea):
     spaces = linea.replace(" ", "")
     index = linea.find("walk")
@@ -214,7 +227,9 @@ def walk(linea):
         token = funcionWalk(linea)
     return token
             
-        
+
+
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion Leap(sin valor) del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def funcionLeap(linea):
     index = linea.find("leap")
     slice = linea[index:len(linea) + 1]
@@ -232,29 +247,22 @@ def funcionLeap2(linea):
     direccion = ["front", "right", "left", "back"]
     coord = ["north", "south", "west", "east"]
     index = linea.find("leap")
-    #print(index)
     split = linea.split(";")
     for x in range(len(split)):
         if "leap" in split[x]:
             indice = x
-    #print(indice)
-    #print(split[indice])
     for i in range(4):
         if direccion[i] in split[indice]:
             lenght = len(direccion[i])
             index_value = split[indice].find(direccion[i])
             nuevo_index = split[indice].find("leap")
-            #print(nuevo_index, "LOOL")
-            #print(index_value, "AÑA")
         elif coord[i] in split[indice]:
             lenght = len(coord[i])
             index_value = split[indice].find(coord[i])
             nuevo_index = split[indice].find("leap")
         else:
             token = "No valido"
-        #slice = linea.replace(" ", "")
         slice1 = split[indice].replace(" ", "")
-        #print(slice1)
         if "(" in slice1 and ")" in slice1:
             if slice1.find("(") < slice1.find(")"):
                 token = "Valido"
@@ -278,7 +286,7 @@ def leap(linea):
         token = funcionLeap(linea)
     return token 
     
-    
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion turn del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def turn(linea):
     lista = ["left", "right", "around"]
     indice = linea.find("turn")
@@ -303,7 +311,7 @@ def turn(linea):
         token = "No valido"
     return token
 
-
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion turnto del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def turnto(linea):
     lista = ["north", "south", "east", "west"]
     param = 0
@@ -327,7 +335,7 @@ def turnto(linea):
         token = "No valido"
     return token
 
-
+#Funcion para saber si un valor string puede ser convertido a entero(Se usa para saber si los parametros son enteros), retorna True o False
 def es_entero(texto):
     try:
         int(texto)
@@ -335,6 +343,7 @@ def es_entero(texto):
     except ValueError:
         return False
 
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion drop del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def drop(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("drop")
@@ -350,7 +359,7 @@ def drop(linea):
         token = "No valido"
     return token
 
-
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion get del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def get(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("get")
@@ -367,7 +376,7 @@ def get(linea):
         token = "No valido"
     return token
 
-
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion grab del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def grab(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("grab")
@@ -385,7 +394,7 @@ def grab(linea):
     return token
 
 
-
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion letGo del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def letGo(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("letgo")
@@ -402,7 +411,7 @@ def letGo(linea):
         token = "No valido"
     return token
 
-
+#Esta funcion es para el lexer y se usa de manera que analice si la funcion nop del programa esta sintacticamente correcta, retorna un token que puede ser Valido o No valido
 def nop(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("nop")
@@ -413,7 +422,7 @@ def nop(linea):
         token = "No valido"
     return token
     
-          
+#El parser que analiza el lexer para saber si el programa esta sintacticamente correcto, Retorna True o False
 def parser(tokens):
     correcto = True
     i = 0
@@ -424,7 +433,7 @@ def parser(tokens):
             i += 1
     return correcto
             
-    
+#El lexer que va analizando linea por linea el programa que se le ingrece y va a retornar una lista con tokens
 def lexer(contenido):
     lineas = contenido.split("\n")
     tokens = []
@@ -484,7 +493,7 @@ def lexer(contenido):
             token = None
     return tokens
 
-
+#El resultado, para saber si la sintaxis del Archivo fue correcta
 def resultado(archivo):
     carga = cargar_archivo(archivo)
     tokens = lexer(carga)
