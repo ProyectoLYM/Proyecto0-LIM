@@ -504,7 +504,7 @@ def lexer(contenido):
 def resultado(archivo):
     carga = cargar_archivo(archivo)
     tokens = lexer(carga)
-    print(tokens)
+    #print(tokens)
     respuesta = parser(tokens)
     if respuesta == True:
         res = print("La sintaxis es correcta: True")
