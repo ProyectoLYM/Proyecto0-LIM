@@ -87,7 +87,6 @@ def condicionalelse(lineas, i):
                         indice += 1
             else:
                 token = "No valido"
-
     return token       
         
 
@@ -174,31 +173,6 @@ def funcionWalk(linea):
         token = "No valido" 
     return token 
     
-
-#def funcionWalk2(linea):
-    direccion = ["front", "right", "left", "back"]
-    coord = ["north", "south", "west", "east"]
-    index = linea.find("walk")
-    for i in range(4):
-        if direccion[i] in linea:
-            lenght = len(direccion[i])
-            index_value = linea.find(direccion[i])
-        elif coord[i] in linea:
-            lenght = len(coord[i])
-            index_value = linea.find(coord[i])
-        else:
-            token = "No valido"
-        slice = linea.replace(" ", "")
-        slice1 = slice[index:index_value + lenght]
-        if "(" in slice1 and ")" in slice1:
-            if slice1.find("(") > slice1.find(")"):
-                token = "Valido"
-            else:
-                token = "No valido"
-        else:
-            token = "No valido"
-        return token
-    
     
 def funcionWalk2(linea):
     direccion = ["front", "right", "left", "back"]
@@ -258,6 +232,7 @@ def funcionLeap2(linea):
     direccion = ["front", "right", "left", "back"]
     coord = ["north", "south", "west", "east"]
     index = linea.find("leap")
+    print(index)
     for i in range(4):
         if direccion[i] in linea:
             lenght = len(direccion[i])
@@ -298,13 +273,10 @@ def turn(linea):
     indice = linea.find("turn")
     param = 0
     for i in range(3):
-        print(lista[i])
-        print(linea)
         if lista[i] in linea:
             param = linea.find(lista[i]) + len(lista[i])
         else:
             token = "No valido"
-
     if param != 0:
         palabra = linea.replace(" ", "")
         indice = palabra.find("turn")
@@ -318,7 +290,6 @@ def turn(linea):
             token = "No valido"
     else:
         token = "No valido"
-    print(token)
     return token
 
 
@@ -346,37 +317,20 @@ def turnto(linea):
     return token
 
 
-def drop(linea):
-    palabra = linea.replace(" ", "")
-    indice = linea.find("drop")
-    palabra1 = linea[indice:len(palabra) - 1]
-    if "(" in palabra and ")" in palabra1:
-        param = palabra1.find("(")
-        param2 = palabra1.find(")")
-        palabra = palabra1[param:param2]
-    else:
-        token = "No valido"
-    if es_entero(palabra) == True:
-        token = "Valido"
-    else:
-        token = "No valido"
-    print(token)
-    return token
-    
 def es_entero(texto):
     try:
         int(texto)
         return True
     except ValueError:
         return False
-def get(linea):
+
+def drop(linea):
     palabra = linea.replace(" ", "")
-    indice = linea.find("get")
-    palabra1 = linea[indice:len(palabra) - 1]
-    if "(" in palabra and ")" in palabra1:
-        param = palabra1.find("(")
-        param2 = palabra1.find(")")
-        palabra = palabra1[param:param2]
+    indice = linea.find("drop")
+    if "(" in palabra and ")" in palabra:
+        param = palabra.find("(")
+        param2 = palabra.find(")")
+        palabra = palabra[param + 1:param2]
     else:
         token = "No valido"
     if es_entero(palabra) == True:
@@ -384,16 +338,33 @@ def get(linea):
     else:
         token = "No valido"
     return token
-    
-    
+
+
+def get(linea):
+    palabra = linea.replace(" ", "")
+    indice = linea.find("get")
+    palabra1 = linea[indice:len(palabra) - 1]
+    if "(" in palabra and ")" in palabra:
+        param = palabra.find("(")
+        param2 = palabra.find(")")
+        palabra = palabra[param + 1:param2]
+    else:
+        token = "No valido"
+    if es_entero(palabra) == True:
+        token = "Valido"
+    else:
+        token = "No valido"
+    return token
+
+
 def grab(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("grab")
     palabra1 = linea[indice:len(palabra) - 1]
-    if "(" in palabra and ")" in palabra1:
-        param = palabra1.find("(")
-        param2 = palabra1.find(")")
-        palabra = palabra1[param:param2]
+    if "(" in palabra and ")" in palabra:
+        param = palabra.find("(")
+        param2 = palabra.find(")")
+        palabra = palabra[param + 1:param2]
     else:
         token = "No valido"
     if es_entero(palabra) == True:
@@ -408,16 +379,17 @@ def letGo(linea):
     palabra = linea.replace(" ", "")
     indice = linea.find("letgo")
     palabra1 = linea[indice:len(palabra)]
-    if "(" in palabra and ")" in palabra1:
-        param = palabra1.find("(")
-        param2 = palabra1.find(")")
-        palabra = palabra1[param:param2]
+    if "(" in palabra and ")" in palabra:
+        param = palabra.find("(")
+        param2 = palabra.find(")")
+        palabra = palabra[param + 1:param2]
+    else:
+        token = "No valido"
     if es_entero(palabra) == True:
         token = "Valido"
     else:
         token = "No valido"
     return token
-
 
 
 def nop(linea):
@@ -471,7 +443,7 @@ def lexer(contenido):
             token = walk(linea)
             tokens.append(token)
         if "leap" in linea:
-            token = leap(linea)
+            token = funcionLeap2(linea)
             tokens.append(token)
         if "jump" in linea:
             token = funcionJump(linea)
