@@ -233,10 +233,13 @@ def funcionLeap2(linea):
     coord = ["north", "south", "west", "east"]
     index = linea.find("leap")
     print(index)
+    split = linea.split(";")
+    print(split)
     for i in range(4):
         if direccion[i] in linea:
             lenght = len(direccion[i])
             index_value = linea.find(direccion[i])
+            print(index_value)
         elif coord[i] in linea:
             lenght = len(coord[i])
             index_value = linea.find(coord[i])
